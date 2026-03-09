@@ -16,7 +16,7 @@ Live and running on **AWS ap-south-1 (Mumbai)** region.
 ![Counter](screenshots/counter.png)
 
 > Sending Message 
-![Message](screenshots/messgae_send.png)
+![Message](screenshots/message_send.png)
 
 > Contact Form Working
 ![Contact](screenshots/contact.png)
