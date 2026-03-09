@@ -16,10 +16,10 @@ Live and running on **AWS ap-south-1 (Mumbai)** region.
 ![Counter](screenshots/counter.png)
 
 > Sending Message 
-![Message] (screenshots/message_send.png)
+![Message](screenshots/messgae_send.png)
 
 > Contact Form Working
-![Contact] (screenshots/contact.png)
+![Contact](screenshots/contact.png)
 
 > Recived Email From User 
 ![Email](screenshots/email.png)
@@ -32,6 +32,10 @@ Live and running on **AWS ap-south-1 (Mumbai)** region.
 
 > DynamoDB ContactMessage Table
 ![ContactMessage](screenshots/contactmessage.png)
+
+> Lambda functions
+![Lambda](screenshots/lambda.png)
+
 
 
 ---
