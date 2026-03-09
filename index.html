@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aman — AWS Cloud & DevOps</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:#050709;--bg2:#0c1018;--bg3:#131a24;--border:rgba(255,255,255,0.06);
+      --accent:#00d4ff;--accent2:#0099cc;--yellow:#fbbf24;--green:#22d3a0;
+      --text:#e2e8f0;--muted:#4a5568;--card:rgba(255,255,255,0.02);
+      --font-h:'Bebas Neue',sans-serif;--font-b:'Outfit',sans-serif;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:var(--font-b);font-weight:300;line-height:1.7;overflow-x:hidden}
+    body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(rgba(0,212,255,0.07) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+    .orb{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0;opacity:.1}
+    .orb1{width:600px;height:600px;background:var(--accent);top:-200px;left:-200px}
+    .orb2{width:500px;height:500px;background:var(--green);bottom:-150px;right:-150px}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:18px 60px;background:rgba(5,7,9,.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+    .nav-logo{font-family:var(--font-h);font-size:1.6rem;letter-spacing:2px;color:var(--accent)}
+    .nav-logo span{color:var(--text)}
+    .nav-links{display:flex;gap:36px}
+    .nav-links a{font-size:.78rem;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s}
+    .nav-links a:hover{color:var(--accent)}
+    section{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:100px 48px}
+    .section-label{font-size:.7rem;letter-spacing:5px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;font-weight:500}
+    .section-title{font-family:var(--font-h);font-size:clamp(2.5rem,5vw,4.5rem);letter-spacing:2px;color:#fff;line-height:1;margin-bottom:48px}
+    .section-title span{color:var(--accent)}
+
+    /* Hero */
+    #hero{min-height:100vh;display:flex;align-items:center;padding-top:120px;max-width:100%;padding-left:8vw;padding-right:8vw;gap:60px}
+    .hero-left{flex:1}
+    .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);border-radius:100px;padding:6px 16px;font-size:.75rem;font-weight:500;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:24px;opacity:0;animation:fadeUp .6s ease .1s forwards}
+    .hero-badge::before{content:'●';font-size:.5rem;animation:blink 1.5s infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+    .hero-name{font-family:var(--font-h);font-size:clamp(4rem,10vw,9rem);letter-spacing:4px;line-height:.9;color:#fff;opacity:0;animation:fadeUp .7s ease .25s forwards}
+    .hero-name .accent{color:var(--accent)}
+    .hero-role{font-size:1.1rem;color:var(--muted);margin-top:20px;font-weight:400;opacity:0;animation:fadeUp .7s ease .4s forwards}
+    .hero-role strong{color:var(--text);font-weight:500}
+    .hero-desc{font-size:.95rem;color:var(--muted);margin-top:16px;max-width:480px;line-height:1.8;opacity:0;animation:fadeUp .7s ease .55s forwards}
+    .hero-btns{display:flex;gap:14px;margin-top:36px;opacity:0;animation:fadeUp .7s ease .7s forwards}
+    .btn{padding:13px 28px;border-radius:6px;font-family:var(--font-b);font-size:.82rem;font-weight:500;letter-spacing:1px;text-decoration:none;cursor:pointer;border:none;transition:all .25s}
+    .btn-primary{background:var(--accent);color:#000}
+    .btn-primary:hover{background:#33ddff;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,212,255,.3)}
+    .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+    .btn-ghost:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+    .hero-right{flex:0 0 360px;position:relative;height:380px;opacity:0;animation:fadeUp 1s ease .8s forwards}
+    .aws-card{position:absolute;background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:10px;font-size:.82rem;font-weight:500;color:var(--text);white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.4);animation:float 4s ease-in-out infinite}
+    .aws-card .dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0}
+    .aws-card:nth-child(1){top:0;left:20px;animation-delay:0s}
+    .aws-card:nth-child(2){top:70px;right:0;animation-delay:.5s}
+    .aws-card:nth-child(3){top:145px;left:0;animation-delay:1s}
+    .aws-card:nth-child(4){top:215px;right:20px;animation-delay:1.5s}
+    .aws-card:nth-child(5){top:290px;left:40px;animation-delay:.8s}
+    .aws-card:nth-child(6){top:330px;right:10px;animation-delay:1.2s}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+    /* About */
+    #about{border-top:1px solid var(--border)}
+    .about-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:64px;align-items:start}
+    .about-text p{color:var(--muted);font-size:.95rem;margin-bottom:16px;line-height:1.9}
+    .about-text p strong{color:var(--text);font-weight:500}
+    .about-stats{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .stat-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:22px;transition:all .3s}
+    .stat-card:hover{border-color:rgba(0,212,255,.3);transform:translateY(-4px)}
+    .stat-num{font-family:var(--font-h);font-size:2.8rem;letter-spacing:2px;color:var(--accent);line-height:1}
+    .stat-label{font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:6px;font-weight:500}
+
+    /* Skills */
+    #skills{border-top:1px solid var(--border)}
+    .skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+    .skill-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:26px;transition:all .3s;position:relative;overflow:hidden}
+    .skill-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),transparent);opacity:0;transition:opacity .3s}
+    .skill-card:hover{border-color:rgba(0,212,255,.2);transform:translateY(-4px)}
+    .skill-card:hover::after{opacity:1}
+    .skill-icon{font-size:2rem;margin-bottom:14px}
+    .skill-name{font-family:var(--font-h);font-size:1.2rem;letter-spacing:1px;color:#fff;margin-bottom:6px}
+    .skill-desc{font-size:.82rem;color:var(--muted);line-height:1.7}
+    .skill-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+    .skill-tag,.skill-tags span{font-size:.65rem;font-weight:500;padding:3px 10px;border-radius:100px;border:1px solid rgba(0,212,255,.25);color:var(--accent);letter-spacing:1px;text-transform:uppercase}
+
+    /* Projects */
+    #projects{border-top:1px solid var(--border)}
+    .projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:22px}
+    .project-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:all .3s}
+    .project-card:hover{border-color:rgba(0,212,255,.25);transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,0,0,.5)}
+    .project-top{height:160px;display:flex;align-items:center;justify-content:center;font-size:3.5rem;position:relative;overflow:hidden}
+    .p1 .project-top{background:linear-gradient(135deg,#0c1a2e,#050709)}
+    .p2 .project-top{background:linear-gradient(135deg,#0d2218,#050709)}
+    .p3 .project-top{background:linear-gradient(135deg,#1a1505,#050709)}
+    .p4 .project-top{background:linear-gradient(135deg,#1a0d1a,#050709)}
+    .project-body{padding:22px}
+    .project-name{font-family:var(--font-h);font-size:1.2rem;letter-spacing:1px;color:#fff;margin-bottom:8px}
+    .project-desc{font-size:.8rem;color:var(--muted);margin-bottom:16px;line-height:1.7}
+    .project-tech{display:flex;flex-wrap:wrap;gap:6px}
+    .project-tech span{font-size:.65rem;font-weight:500;padding:3px 10px;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.15);color:var(--accent);border-radius:100px;letter-spacing:1px}
+
+    /* Certifications */
+    #certifications{border-top:1px solid var(--border)}
+    .cert-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+    .cert-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:28px;text-align:center;transition:all .3s}
+    .cert-card:hover{border-color:rgba(251,191,36,.3);transform:translateY(-4px)}
+    .cert-icon{font-size:2.5rem;margin-bottom:14px}
+    .cert-name{font-family:var(--font-h);font-size:1rem;letter-spacing:1px;color:#fff;margin-bottom:6px}
+    .cert-code{font-size:.8rem;color:var(--muted);margin-top:4px}
+    .cert-status{display:inline-block;font-size:.65rem;font-weight:600;padding:4px 12px;border-radius:100px;letter-spacing:2px;text-transform:uppercase;margin-top:10px}
+    .status-progress{background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);color:var(--yellow)}
+    .status-planned{background:rgba(74,85,104,.15);border:1px solid rgba(74,85,104,.3);color:var(--muted)}
+
+    /* Visitor Counter */
+    #visitors{border-top:1px solid var(--border)}
+    .counter-wrap{display:flex;flex-direction:column;align-items:center;padding:48px 0}
+    .counter-label{font-size:.7rem;font-weight:500;letter-spacing:5px;text-transform:uppercase;color:var(--muted);margin-bottom:32px}
+    .counter-digits{display:flex;gap:8px;margin-bottom:28px}
+    .c-digit{width:68px;height:92px;background:var(--bg3);border:1px solid rgba(0,212,255,.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-size:3rem;letter-spacing:2px;color:var(--accent);text-shadow:0 0 20px rgba(0,212,255,.6);box-shadow:0 0 20px rgba(0,212,255,.05),inset 0 0 20px rgba(0,0,0,.3);position:relative;overflow:hidden;opacity:1}
+    .c-digit::after{content:'';position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(0,212,255,.08)}
+    .counter-status{font-size:.75rem;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+    .counter-status.is-new{color:var(--accent)}
+
+    /* Contact */
+    #contact{border-top:1px solid var(--border)}
+    .contact-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:64px;align-items:start}
+    .contact-info h3{font-family:var(--font-h);font-size:1.3rem;letter-spacing:1px;color:#fff;margin-bottom:10px}
+    .contact-info p{font-size:.88rem;color:var(--muted);margin-bottom:28px;line-height:1.8}
+    .contact-links{display:flex;flex-direction:column;gap:12px}
+    .contact-link{display:flex;align-items:center;gap:12px;font-size:.85rem;color:var(--muted);text-decoration:none;transition:color .2s}
+    .contact-link:hover{color:var(--accent)}
+    .contact-link .icon{font-size:1.1rem;width:22px}
+    .form-group{margin-bottom:18px}
+    .form-group label{display:block;font-size:.68rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+    .form-group input,.form-group textarea{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:13px 16px;color:var(--text);font-family:var(--font-b);font-size:.88rem;font-weight:300;outline:none;transition:border-color .2s,box-shadow .2s;resize:vertical}
+    .form-group input:focus,.form-group textarea:focus{border-color:rgba(0,212,255,.4);box-shadow:0 0 0 3px rgba(0,212,255,.06)}
+    .form-group textarea{min-height:130px}
+    .form-submit{width:100%;padding:14px;background:var(--accent);color:#000;border:none;border-radius:8px;font-family:var(--font-b);font-size:.85rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s}
+    .form-submit:hover{background:#33ddff;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,212,255,.25)}
+    .form-submit:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+    .form-msg{margin-top:10px;font-size:.82rem;text-align:center;height:20px}
+    .form-msg.success{color:var(--green)}
+    .form-msg.error{color:#f87171}
+
+    footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:28px 60px;display:flex;justify-content:space-between;align-items:center;font-size:.75rem;color:var(--muted)}
+
+    .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+
+    @media(max-width:900px){
+      nav{padding:16px 24px}
+      .nav-links{display:none}
+      #hero{flex-direction:column;padding:120px 24px 60px;gap:40px}
+      .hero-right{display:none}
+      section{padding:72px 24px}
+      .about-grid,.contact-grid{grid-template-columns:1fr;gap:40px}
+      footer{flex-direction:column;gap:8px;text-align:center;padding:24px}
+    }
+  </style>
+</head>
+<body>
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+
+  <nav>
+    <div class="nav-logo">AMAN<span>.DEV</span></div>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#certifications">Certs</a>
+      <a href="#visitors">Visitors</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <section id="hero">
+    <div class="hero-left">
+      <div class="hero-badge">Available for opportunities</div>
+      <div class="hero-name">AMAN<br/><span class="accent">CLOUD</span></div>
+      <p class="hero-role"><strong>AWS Cloud Engineer</strong> &amp; DevOps Learner</p>
+      <p class="hero-desc">Building scalable serverless applications on AWS. Passionate about cloud infrastructure, automation, and deploying real-world projects using Lambda, DynamoDB, S3 and API Gateway.</p>
+      <div class="hero-btns">
+        <a href="#projects" class="btn btn-primary">View Projects</a>
+        <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="aws-card"><div class="dot"></div>AWS Lambda</div>
+      <div class="aws-card"><div class="dot"></div>Amazon S3</div>
+      <div class="aws-card"><div class="dot"></div>DynamoDB</div>
+      <div class="aws-card"><div class="dot"></div>API Gateway</div>
+      <div class="aws-card"><div class="dot"></div>CloudWatch</div>
+      <div class="aws-card"><div class="dot"></div>IAM &amp; Security</div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="reveal">
+      <div class="section-label">// 01 — About Me</div>
+      <h2 class="section-title">Who I <span>Am</span></h2>
+    </div>
+    <div class="about-grid reveal">
+      <div class="about-text">
+        <p>Hi! I'm <strong>Aman</strong>, an aspiring AWS Cloud Engineer actively learning and building on AWS. I believe the best way to master cloud is to deploy real projects — not just watch tutorials.</p>
+        <p>My current focus is <strong>serverless architecture</strong> — building applications with Lambda, API Gateway, DynamoDB and S3 without managing any servers.</p>
+        <p>I've also studied <strong>EC2, VPC, CloudWatch, Auto Scaling, Load Balancers, SNS</strong> and understand how enterprise-grade cloud infrastructure is built and scaled.</p>
+        <p>Every project I build teaches me something new. I document my learning, fix real errors, and keep pushing forward. ☁️</p>
+      </div>
+      <div class="about-stats">
+        <div class="stat-card"><div class="stat-num">14+</div><div class="stat-label">AWS Services Learned</div></div>
+        <div class="stat-card"><div class="stat-num">4+</div><div class="stat-label">Projects Deployed</div></div>
+        <div class="stat-card"><div class="stat-num">100%</div><div class="stat-label">Serverless Focus</div></div>
+        <div class="stat-card"><div class="stat-num">∞</div><div class="stat-label">Things to Learn</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="reveal">
+      <div class="section-label">// 02 — Skills</div>
+      <h2 class="section-title">AWS <span>Expertise</span></h2>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <div class="skill-icon">⚡</div>
+        <div class="skill-name">Serverless Compute</div>
+        <div class="skill-desc">Building event-driven Lambda functions in Python and Ruby. Zero server management, infinite scale.</div>
+        <div class="skill-tags"><span>Lambda</span><span>Python</span><span>Ruby</span><span>Event-Driven</span></div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🗄️</div>
+        <div class="skill-name">Database &amp; Storage</div>
+        <div class="skill-desc">NoSQL with DynamoDB for real-time data. Object storage with S3 for static hosting and files.</div>
+        <div class="skill-tags"><span>DynamoDB</span><span>S3</span><span>NoSQL</span><span>Storage</span></div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🔗</div>
+        <div class="skill-name">API &amp; Networking</div>
+        <div class="skill-desc">REST APIs with API Gateway. VPC configuration, subnets, security groups and routing tables.</div>
+        <div class="skill-tags"><span>API Gateway</span><span>VPC</span><span>CORS</span><span>REST</span></div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">🔒</div>
+        <div class="skill-name">Security &amp; IAM</div>
+        <div class="skill-desc">IAM roles, policies, and least privilege access. AWS Shared Responsibility Model.</div>
+        <div class="skill-tags"><span>IAM</span><span>Roles</span><span>Policies</span><span>MFA</span></div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">📊</div>
+        <div class="skill-name">Monitoring &amp; Scaling</div>
+        <div class="skill-desc">CloudWatch metrics and logs. Auto Scaling groups and Load Balancers for high availability.</div>
+        <div class="skill-tags"><span>CloudWatch</span><span>Auto Scaling</span><span>ELB</span><span>SNS</span></div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-icon">💻</div>
+        <div class="skill-name">Development</div>
+        <div class="skill-desc">Building cloud-integrated web apps with clean maintainable code across multiple languages.</div>
+        <div class="skill-tags"><span>Python</span><span>JavaScript</span><span>HTML/CSS</span><span>Ruby</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="reveal">
+      <div class="section-label">// 03 — Projects</div>
+      <h2 class="section-title">What I've <span>Built</span></h2>
+    </div>
+    <div class="projects-grid">
+      <div class="project-card p1 reveal">
+        <div class="project-top">🔢</div>
+        <div class="project-body">
+          <div class="project-name">Serverless Visitor Counter</div>
+          <div class="project-desc">Real-time visitor tracking using serverless architecture. Each visit increments a DynamoDB counter via Lambda and API Gateway.</div>
+          <div class="project-tech"><span>Lambda</span><span>DynamoDB</span><span>API Gateway</span><span>S3</span><span>Python</span></div>
+        </div>
+      </div>
+      <div class="project-card p2 reveal">
+        <div class="project-top">📄</div>
+        <div class="project-body">
+          <div class="project-name">Resume Website on AWS</div>
+          <div class="project-desc">Personal resume hosted on S3 with live visitor counter powered by Lambda and DynamoDB. Built as part of AWS assignment.</div>
+          <div class="project-tech"><span>S3</span><span>Lambda</span><span>DynamoDB</span><span>API Gateway</span></div>
+        </div>
+      </div>
+      <div class="project-card p3 reveal">
+        <div class="project-top">🌐</div>
+        <div class="project-body">
+          <div class="project-name">Portfolio Website</div>
+          <div class="project-desc">This portfolio — hosted on S3 with live visitor counter and contact form. Full serverless architecture on AWS ap-south-1.</div>
+          <div class="project-tech"><span>S3</span><span>Lambda</span><span>API Gateway</span><span>DynamoDB</span></div>
+        </div>
+      </div>
+      <div class="project-card p4 reveal">
+        <div class="project-top">🏗️</div>
+        <div class="project-body">
+          <div class="project-name">More Projects Coming Soon</div>
+          <div class="project-desc">Currently working on EC2 deployments, VPC configurations, and CI/CD pipelines with CodePipeline.</div>
+          <div class="project-tech"><span>EC2</span><span>VPC</span><span>CodePipeline</span><span>Coming Soon</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="certifications">
+    <div class="reveal">
+      <div class="section-label">// 04 — Certifications</div>
+      <h2 class="section-title">AWS <span>Certs</span></h2>
+    </div>
+    <div class="cert-grid">
+      <div class="cert-card reveal">
+        <div class="cert-icon">☁️</div>
+        <div class="cert-name">AWS Cloud Practitioner</div>
+        <div class="cert-code">CLF-C02</div>
+        <div class="cert-status status-progress">In Progress</div>
+      </div>
+      <div class="cert-card reveal">
+        <div class="cert-icon">⚡</div>
+        <div class="cert-name">AWS Developer Associate</div>
+        <div class="cert-code">DVA-C02</div>
+        <div class="cert-status status-planned">Planned</div>
+      </div>
+      <div class="cert-card reveal">
+        <div class="cert-icon">🏛️</div>
+        <div class="cert-name">Solutions Architect Associate</div>
+        <div class="cert-code">SAA-C03</div>
+        <div class="cert-status status-planned">Planned</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="visitors">
+    <div class="section-label">// 05 — Live Counter</div>
+    <h2 class="section-title">Site <span>Visitors</span></h2>
+    <div class="counter-wrap">
+      <div class="counter-label">Total visitors to this site</div>
+      <div class="counter-digits" id="counterDigits">
+        <div class="c-digit">0</div><div class="c-digit">0</div><div class="c-digit">0</div>
+        <div class="c-digit">0</div><div class="c-digit">0</div><div class="c-digit">0</div>
+      </div>
+      <div class="counter-status" id="counterStatus">Connecting to AWS...</div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="reveal">
+      <div class="section-label">// 06 — Contact</div>
+      <h2 class="section-title">Get in <span>Touch</span></h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <h3>Let's Connect</h3>
+        <p>Whether you want to talk AWS, collaborate on a project, or just say hi — feel free to reach out!</p>
+        <div class="contact-links">
+          <a href="mailto:nilgeramanullah@gmail.com" class="contact-link"><span class="icon">✉️</span>Email</a>
+          <a href="https://github.com/1amanullah/aws-serverless-portfolio/" class="contact-link" target="_blank"><span class="icon">🐙</span>Github</a>
+          <a href="https://www.linkedin.com/in/aman-ullah-nilger/" class="contact-link" target="_blank"><span class="icon">💼</span> linkedin</a>
+          <a href="#" class="contact-link"><span class="icon">☁️</span> AWS ap-south-1 (Mumbai)</a>
+        </div>
+      </div>
+      <div class="reveal">
+        <form id="contactForm">
+          <div class="form-group"><label>Your Name</label><input type="text" id="fname" placeholder="John Doe" required/></div>
+          <div class="form-group"><label>Email Address</label><input type="email" id="femail" placeholder="john@example.com" required/></div>
+          <div class="form-group"><label>Subject</label><input type="text" id="fsubject" placeholder="Let's talk about AWS..."/></div>
+          <div class="form-group"><label>Message</label><textarea id="fmessage" placeholder="Your message..." required></textarea></div>
+   <button type="submit" class="form-submit" id="submitBtn">Send Message</button>
+<div class="form-msg" id="formMsg"></div>
+<p style="margin-top:14px;font-size:0.75rem;color:#4a5568;text-align:center;line-height:1.6;">
+  ⚠️ This portfolio is built for <strong>AWS learning purposes.</strong><br/>
+  Auto-reply emails are limited due to SES Sandbox mode.<br/>
+  Your message is saved and I will reply manually! ☁️
+</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div>Aman.dev — Built &amp; Deployed on AWS ☁️</div>
+    <div>ap-south-1 (Mumbai) · 2026</div>
+  </footer>
+
+  <script>
+    // ── CONFIG — Replace with your API Gateway URLs after deployment ──
+    const VISITOR_API_URL = "https://hhgjqyvo3a.execute-api.ap-south-1.amazonaws.com/prod/visitor";
+    const CONTACT_API_URL = "https://hhgjqyvo3a.execute-api.ap-south-1.amazonaws.com/prod/contact";
+    // ──────────────────────────────────────────────────────────────────
+
+    const SESSION_KEY = "aman_portfolio_visited";
+
+    async function initCounter() {
+      const statusEl = document.getElementById("counterStatus");
+      const alreadyCounted = sessionStorage.getItem(SESSION_KEY);
+      renderDigits(0);
+      try {
+        let count;
+        if (!alreadyCounted) {
+          const res = await fetch(VISITOR_API_URL, { method: "POST" });
+          if (!res.ok) throw new Error("API error " + res.status);
+          const data = await res.json();
+          count = data.count ?? (data.body && JSON.parse(data.body).count);
+          sessionStorage.setItem(SESSION_KEY, "1");
+          statusEl.textContent = "YOU ARE VISITOR #" + count;
+          statusEl.classList.add("is-new");
+        } else {
+          const res = await fetch("https://hhgjqyvo3a.execute-api.ap-south-1.amazonaws.com/prod/visitor", { method: "GET" });
+          if (!res.ok) throw new Error("API error " + res.status);
+          const data = await res.json();
+          count = data.count ?? (data.body && JSON.parse(data.body).count);
+          statusEl.textContent = "TOTAL VISITORS RECORDED";
+        }
+        renderDigits(count || 0);
+      } catch (e) {
+        statusEl.textContent = "Add API URL to activate counter";
+        renderDigits(0);
+      }
+    }
+
+    function renderDigits(count) {
+      const str = String(count).padStart(6, "0");
+      const container = document.getElementById("counterDigits");
+      container.innerHTML = "";
+      str.split("").forEach(d => {
+        const el = document.createElement("div");
+        el.className = "c-digit";
+        el.textContent = d;
+        container.appendChild(el);
+      });
+    }
+
+    document.getElementById("contactForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById("submitBtn");
+      const msg = document.getElementById("formMsg");
+      btn.disabled = true; btn.textContent = "Sending...";
+      msg.className = "form-msg"; msg.textContent = "";
+      try {
+        const res = await fetch("https://hhgjqyvo3a.execute-api.ap-south-1.amazonaws.com/prod/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: document.getElementById("fname").value,
+            email: document.getElementById("femail").value,
+            subject: document.getElementById("fsubject").value,
+            message: document.getElementById("fmessage").value,
+          }),
+        });
+        if (res.ok) {
+          msg.textContent = "✅ Message sent successfully!";
+          msg.className = "form-msg success";
+          e.target.reset();
+        } else throw new Error();
+      } catch {
+        msg.textContent = "https://hhgjqyvo3a.execute-api.ap-south-1.amazonaws.com/prod/contact";
+        msg.className = "form-msg error";
+      }
+      btn.disabled = false; btn.textContent = "Send Message";
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); observer.unobserve(e.target); } });
+    }, { threshold: 0.05, rootMargin: "0px 0px -40px 0px" });
+    document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+    window.addEventListener("load", () => {
+      document.querySelectorAll(".reveal").forEach(el => {
+        if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add("visible");
+      });
+    });
+
+    initCounter();
+  </script>
+</body>
+</html>
+
